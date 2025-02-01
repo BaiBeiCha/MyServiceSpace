@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio & Shop - Shop</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/themes.css}"/>
+    <script th:src="@{/js/theme.js}" defer></script>
+</head>
+<body class="light-theme">
+<header>
+    <div class="logo">
+        <img src="/images/logo.jpg" alt="Logo">
+    </div>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/shop" class="active">Shop</a>
+        <a href="/about">About me</a>
+        <a href="/contacts">Contacts</a>
+        <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+           href="/admin/products">Admin Panel</a>
+    </nav>
+    <div class="auth-buttons">
+        <button class="theme-toggle" aria-label="Switch to dark theme" role="switch" aria-checked="false">
+            🌙
+            <span class="sr-only">Switch to dark theme</span>
+        </button>
+        <a th:if="!${#authorization.expression('isAuthenticated()')}"
+           href="/login" class="btn btn-login">Login</a>
+        <a th:if="!${#authorization.expression('isAuthenticated()')}"
+           href="/register" class="btn btn-register">Register</a>
+        <a th:if="${#authorization.expression('isAuthenticated()')}"
+           href="/settings" class="goto-settings">A</a>
+    </div>
+</header>
+
+    <main class="shop-page">
+        <div class="shop-container">
+            <aside class="filters">
+                <form method="get" th:action="@{/shop}" th:object="${filtersCard}" id="filtersCard">
+                    <h2>Filters</h2>
+                    <div class="filter-group">
+                        <h3>Categories</h3>
+                        <label>
+                            <input type="checkbox" name="TGBot" th:field="*{TGBot}"> Telegram Bot
+                        </label>
+                        <label>
+                            <input type="checkbox" name="Website" th:field="*{Website}"> Website
+                        </label>
+                        <label>
+                            <input type="checkbox" name="Backend" th:field="*{Backend}"> Backend
+                        </label>
+                        <label>
+                            <input type="checkbox" name="Other" th:field="*{Other}"> Other
+                        </label>
+                    </div>
+                    <div class="filter-group">
+                        <h3>Price Range</h3>
+                        <div class="price-range">
+                            <input type="number"
+                                   class="form-control"
+                                   id="minPrice"
+                                   th:field="*{minPrice}"
+                                   placeholder="Min Price"
+                                   min="0"
+                                   step="0.01"
+                                   oninput="validateMinPrice(this)">
+
+                            <input type="number"
+                                   class="form-control"
+                                   id="maxPrice"
+                                   th:field="*{maxPrice}"
+                                   placeholder="Max Price"
+                                   min="0"
+                                   step="0.01"
+                                   oninput="validateMaxPrice(this)">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Apply filters</button>
+                </form>
+            </aside>
+
+            <div class="products">
+                <div class="product-card" th:each="product : ${products}">
+                    <img th:src="${product.getImage()}" th:alt="${product.getName()}">
+                    <h3 th:text="${product.getName()}"></h3>
+                    <p th:text="${product.getDescription()}"></p>
+                    <p class="price" th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}"></p>
+                    <a th:href="@{/product/{id}(id=${product.id})}">
+                        <button class="btn btn-primary">Buy</button>
+                    </a>
+                </div>
+                <p th:text="${message}"></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Portfolio & Shop. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function validateMinPrice(input) {
+            if (input.value < 0) {
+                input.value = 0;
+            }
+            if (input.value === "") {
+                input.value = 0;
+            }
+        }
+
+        function validateMaxPrice(input) {
+            if (input.value < 0) {
+                input.value = 0;
+            }
+            if (input.value === "") {
+                input.value = 9999;
+            }
+        }
+    </script>
+</body>
+</html>

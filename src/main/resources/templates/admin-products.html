@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Products</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/themes.css}"/>
+    <script th:src="@{/js/theme.js}" defer></script>
+</head>
+<body class="light-theme">
+<header>
+    <div class="logo">
+        <img src="/images/logo.jpg" alt="Logo">
+    </div>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/shop">Shop</a>
+        <a href="/about">About me</a>
+        <a href="/contacts">Contacts</a>
+        <a href="/admin/products" class="active">Products</a>
+        <a href="/admin/messages">Messages</a>
+    </nav>
+    <div class="auth-buttons">
+        <button class="theme-toggle" aria-label="Switch to dark theme" role="switch" aria-checked="false">
+            🌙
+            <span class="sr-only">Switch to dark theme</span>
+        </button>
+        <a href="/settings" class="goto-settings">A</a>
+    </div>
+</header>
+
+<main>
+    <div class="admin-container">
+        <h1>Manage Products</h1>
+
+        <form th:action="@{/admin/products}" method="post" class="form-grid">
+            <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" class="form-control" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea class="form-control" name="description" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Price</label>
+                <input type="number" class="form-control" name="price" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label>Category</label>
+                <select class="form-control" name="category">
+                    <option value="TGBOT">Telegram Bot</option>
+                    <option value="WEBSITE">Website</option>
+                    <option value="BACKEND">Backend</option>
+                    <option value="OTHER">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group file-input">
+                <label>Image URL</label>
+                <input type="text" class="form-control" name="image" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+
+        <div class="products-list">
+            <h2>Existing Products</h2>
+            <div class="product-item" th:each="product : ${products}">
+                <div class="product-info">
+                    <h3 th:text="${product.name}"></h3>
+                    <p class="price" th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}"></p>
+                    <p class="description" th:text="${product.description}"></p>
+                </div>
+
+                <div class="product-actions">
+                    <a th:href="@{/admin/products/edit/{id}(id=${product.id})}">
+                        <button class="btn btn-primary">Edit</button>
+                    </a>
+
+                    <form th:action="@{/admin/products/{id}(id=${product.id})}" method="post">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <button type="submit" class="btn btn-secondary">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

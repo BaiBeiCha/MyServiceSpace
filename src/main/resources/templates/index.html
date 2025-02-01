@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio & Shop - Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/themes.css}"/>
+    <script th:src="@{/js/theme.js}" defer></script>
+</head>
+<body class="light-theme">
+    <header>
+        <div class="logo">
+            <img src="/images/logo.jpg" alt="Logo">
+        </div>
+        <nav>
+            <a href="/" class="active">Home</a>
+            <a href="/shop">Shop</a>
+            <a href="/about">About me</a>
+            <a href="/contacts">Contacts</a>
+            <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+               href="/admin/products">Admin Panel</a>
+        </nav>
+        <div class="auth-buttons">
+            <button class="theme-toggle" aria-label="Switch to dark theme" role="switch" aria-checked="false">
+                🌙
+                <span class="sr-only">Switch to dark theme</span>
+            </button>
+            <a th:if="!${#authorization.expression('isAuthenticated()')}"
+               href="/login" class="btn btn-login">Login</a>
+            <a th:if="!${#authorization.expression('isAuthenticated()')}"
+               href="/register" class="btn btn-register">Register</a>
+            <a th:if="${#authorization.expression('isAuthenticated()')}"
+               href="/settings" class="goto-settings">A</a>
+        </div>
+    </header>
+
+    <main class="home-page">
+        <section class="hero">
+            <h1>Welcome to My Portfolio & Shop</h1>
+            <p>Professional Developer & Digital Creator</p>
+        </section>
+
+        <section class="stats">
+            <div class="stat-card">
+                <h3>Completed Orders</h3>
+                <p class="number">52</p>
+            </div>
+            <div class="stat-card">
+                <h3>Happy Clients</h3>
+                <p class="number">-3</p>
+            </div>
+            <div class="stat-card">
+                <h3>Years Experience</h3>
+                <p class="number">0</p>
+            </div>
+        </section>
+
+        <section class="why-choose-us">
+            <h2>Why Choose Us</h2>
+            <div class="features">
+                <div class="feature">
+                    <h3>Quality First</h3>
+                    <p>Exceptional quality in every project we deliver</p>
+                </div>
+                <div class="feature">
+                    <h3>On-time Delivery</h3>
+                    <p>We respect deadlines and deliver on time</p>
+                </div>
+                <div class="feature">
+                    <h3>24/7 Support</h3>
+                    <p>Always here to help you succeed</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="reviews">
+            <h2>Client Reviews</h2>
+            <div class="review-container">
+                <div class="review-card">
+                    <h3>Noname</h3>
+                    <div class="stars">★★★★★</div>
+                    <p>Test Review.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Portfolio & Shop. All rights reserved.</p>
+    </footer>
+</body>
+</html>

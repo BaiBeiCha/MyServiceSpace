@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Messages</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/themes.css}"/>
+  <script th:src="@{/js/theme.js}" defer></script>
+  <style>
+    .messages-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: var(--card-background);
+      border-radius: var(--border-radius);
+    }
+
+    .message-card {
+      background-color: var(--background-color);
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .message-actions {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 0.5rem;
+    }
+
+    .unread {
+      background-color: var(--primary-color);
+    }
+
+    .read {
+      background-color: #6c757d;
+    }
+
+    .message-content {
+      line-height: 1.6;
+      color: var(--text-color);
+    }
+
+    .message-date {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body class="light-theme">
+<header>
+  <div class="logo">
+    <img src="/images/logo.jpg" alt="Logo">
+  </div>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/shop">Shop</a>
+    <a href="/about">About me</a>
+    <a href="/contacts">Contacts</a>
+    <a href="/admin/products">Products</a>
+    <a href="/admin/messages" class="active">Messages</a>
+  </nav>
+  <div class="auth-buttons">
+    <button class="theme-toggle" aria-label="Switch to dark theme" role="switch" aria-checked="false">
+      🌙
+      <span class="sr-only">Switch to dark theme</span>
+    </button>
+    <a href="/settings" class="goto-settings">A</a>
+  </div>
+</header>
+
+<main>
+  <div class="messages-container">
+    <h1>User Messages</h1>
+
+    <div class="message-card" th:each="message : ${messages}">
+      <div class="message-actions">
+        <div>
+          <form th:action="@{/admin/messages/{id}(id=${message.id})}" method="post">
+            <input type="hidden" name="_method" value="DELETE"/>
+            <button type="submit" class="btn btn-primary">✕</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="message-header">
+        <div>
+          <span class="status-indicator unread"></span>
+          <strong th:text="${message.name}"></strong>
+          <span th:text="'<' + ${message.email} + '>'"></span>
+        </div>
+      </div>
+
+      <div class="message-content">
+        <p th:text="${message.content}"></p>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio & Shop - Contacts</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/themes.css}"/>
+    <script th:src="@{/js/theme.js}" defer></script>
+</head>
+<body class="light-theme">
+<header>
+    <div class="logo">
+        <img src="/images/logo.jpg" alt="Logo">
+    </div>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/shop">Shop</a>
+        <a href="/about">About me</a>
+        <a href="/contacts" class="active">Contacts</a>
+        <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+           href="/admin/products">Admin Panel</a>
+    </nav>
+    <div class="auth-buttons">
+        <button class="theme-toggle" aria-label="Switch to dark theme" role="switch" aria-checked="false">
+            🌙
+            <span class="sr-only">Switch to dark theme</span>
+        </button>
+        <a th:if="!${#authorization.expression('isAuthenticated()')}"
+           href="/login" class="btn btn-login">Login</a>
+        <a th:if="!${#authorization.expression('isAuthenticated()')}"
+           href="/register" class="btn btn-register">Register</a>
+        <a th:if="${#authorization.expression('isAuthenticated()')}"
+           href="/settings" class="goto-settings">A</a>
+    </div>
+</header>
+
+    <main class="contact-page">
+        <div class="contact-container">
+            <h1>Contact Me</h1>
+            <div class="contact-info">
+                <div class="contact-card">
+                    <i>📧</i>
+                    <h3>Email</h3>
+                    <p>contact@example.com</p>
+                </div>
+                <div class="contact-card">
+                    <i>📱</i>
+                    <h3>Phone</h3>
+                    <p>+1 (555) 123-4567</p>
+                </div>
+                <div class="contact-card">
+                    <i>📍</i>
+                    <h3>Location</h3>
+                    <p>Minsk</p>
+                </div>
+                <div class="contact-card">
+                    <i>💬</i>
+                    <h3>Telegram</h3>
+                    <p>@username</p>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h2>Send Message</h2>
+                <form method="post" th:action="@{/contacts}">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input class="form-control" type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input class="form-control" type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Message</label>
+                        <textarea class="form-control" id="content" name="content" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Portfolio & Shop. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio & Shop - Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/themes.css}"/>
+    <script th:src="@{/js/theme.js}" defer></script>
+</head>
+<body class="light-theme">
+<header>
+    <div class="logo">
+        <img src="/images/logo.jpg" alt="Logo">
+    </div>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/shop">Shop</a>
+        <a href="/about">About me</a>
+        <a href="/contacts">Contacts</a>
+        <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+           href="/admin/products">Admin Panel</a>
+    </nav>
+    <div class="auth-buttons">
+        <button class="theme-toggle" aria-label="Switch to dark theme" role="switch" aria-checked="false">
+            🌙
+            <span class="sr-only">Switch to dark theme</span>
+        </button>
+        <a th:if="!${#authorization.expression('isAuthenticated()')}"
+           href="/login" class="btn btn-login">Login</a>
+        <a th:if="!${#authorization.expression('isAuthenticated()')}"
+           href="/register" class="btn btn-register">Register</a>
+        <a th:if="${#authorization.expression('isAuthenticated()')}"
+           href="/settings" class="goto-settings">A</a>
+    </div>
+</header>
+
+    <main class="auth-page">
+        <div class="auth-container">
+            <h1>Login</h1>
+            <form method="POST" th:action="@{/login}" class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label th:for="username">Email or Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label th:for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <p class="auth-link">Don't have an account? <a href="/register">Register here</a></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Portfolio & Shop. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio & Shop - Settings</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/themes.css}"/>
+    <script th:src="@{/js/theme.js}" defer></script>
+</head>
+<body class="light-theme">
+<header>
+    <div class="logo">
+        <img src="/images/logo.jpg" alt="Logo">
+    </div>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/shop">Shop</a>
+        <a href="/about">About me</a>
+        <a href="/contacts">Contacts</a>
+        <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+           href="/admin/products">Admin Panel</a>
+    </nav>
+    <div class="auth-buttons">
+        <button class="theme-toggle" aria-label="Switch to dark theme" role="switch" aria-checked="false">
+            🌙
+            <span class="sr-only">Switch to dark theme</span>
+        </button>
+        <a th:if="!${#authorization.expression('isAuthenticated()')}"
+           href="/login" class="btn btn-login">Login</a>
+        <a th:if="!${#authorization.expression('isAuthenticated()')}"
+           href="/register" class="btn btn-register">Register</a>
+        <a th:if="${#authorization.expression('isAuthenticated()')}"
+           href="/settings" class="goto-settings">A</a>
+    </div>
+</header>
+
+    <main class="settings-page">
+        <div class="settings-container">
+            <h1>Account Settings</h1>
+            <form method="post" th:action="@{/settings}" class="settings-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" th:value="${user.username}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" th:value="${user.email}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" name="currentPassword" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" name="newPassword">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword">
+                </div>
+
+                <h2>Payment Details</h2>
+                <div class="form-group">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" name="card-number" placeholder="**** **** **** ****">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expiry">Expiry Date</label>
+                        <input type="text" id="expiry" name="expiry" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" placeholder="***">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+
+            <form method="post" th:action="@{/logout}" class="settings-form">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Log out</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Portfolio & Shop. All rights reserved.</p>
+    </footer>
+</body>
+</html>
